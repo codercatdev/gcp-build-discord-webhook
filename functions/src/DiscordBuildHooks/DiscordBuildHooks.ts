@@ -61,7 +61,7 @@ export interface GoogleCloudBuild {
     id: string;
     projectId: string;
     status: string;
-    steps: Step[];
+    steps?: Step[];
     createTime: Date;
     startTime: Date;
     finishTime: Date;
