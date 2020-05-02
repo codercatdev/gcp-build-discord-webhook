@@ -28,22 +28,26 @@ const sendDiscordBuildPost = async (body: object) => {
 
 const createBuildMessage = (build: GoogleCloudBuild) => {
     const embeds: Embed[] = [];
-    build.steps.forEach(step => {
-        embeds.push({
-            title: step.name,
-            description:
-                `${step.entrypoint} ${step.args.join(' ')}` +
-                `took ${(<any>new Date(step.timing.endTime) - <any>new Date(step.timing.startTime)) * .001}` +
-                `and ${step.status}`,
-            color: build.status === 'FAILURE' ? 16714507 : 6618931
-        });
-    });
-    return {
+    const msg = {
         content: `Build ${build.id} for project ${build.projectId} was a ${build.status} ` +
             `took ${(<any>new Date(build.finishTime) - <any>new Date(build.startTime)) * .001}`,
         tts: build.status === 'FAILURE' ? true : false,
-        embeds
+        embeds: embeds
     }
+    if (build && build.steps) {
+        build.steps.forEach(step => {
+            embeds.push({
+                title: step.name,
+                description:
+                    `${step.entrypoint} ${step.args.join(' ')}` +
+                    `took ${(<any>new Date(step.timing.endTime) - <any>new Date(step.timing.startTime)) * .001}` +
+                    `and ${step.status}`,
+                color: build.status === 'FAILURE' ? 16714507 : 6618931
+            });
+        });
+        msg.embeds = embeds;
+    }
+    return msg;
 }
 
 export interface Embed {
