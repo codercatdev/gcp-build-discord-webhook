@@ -40,7 +40,7 @@ const createBuildMessage = (build: GoogleCloudBuild) => {
                 title: step.name,
                 description:
                     `${step.entrypoint} ${step.args.join(' ')}` +
-                    step.timing ?
+                    step.timing && step.timing.endTime ?
                     `took ${(<any>new Date(step.timing.endTime) - <any>new Date(step.timing.startTime)) * .001}`
                     : '' +
                     `and ${step.status}`,
