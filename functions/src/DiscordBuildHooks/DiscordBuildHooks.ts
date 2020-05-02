@@ -36,14 +36,14 @@ const createBuildMessage = (build: GoogleCloudBuild) => {
     }
     if (build && build.steps) {
         build.steps.forEach(step => {
+            let time = '';
+            if(step.timing && step.timing.endTime){
+                time = `took ${(<any>new Date(step.timing.endTime) - <any>new Date(step.timing.startTime)) * .001}`
+            }
             embeds.push({
                 title: step.name,
                 description:
-                    `${step.entrypoint} ${step.args.join(' ')}` +
-                    step.timing && step.timing.endTime ?
-                    `took ${(<any>new Date(step.timing.endTime) - <any>new Date(step.timing.startTime)) * .001}`
-                    : '' +
-                    `and ${step.status}`,
+                    `${step.entrypoint} ${step.args.join(' ')} ${time} and ${step.status}`,
                 color: build.status === 'FAILURE' ? 16714507 : 6618931
             });
         });
