@@ -40,7 +40,9 @@ const createBuildMessage = (build: GoogleCloudBuild) => {
                 title: step.name,
                 description:
                     `${step.entrypoint} ${step.args.join(' ')}` +
-                    `took ${(<any>new Date(step.timing.endTime) - <any>new Date(step.timing.startTime)) * .001}` +
+                    step.timing ?
+                    `took ${(<any>new Date(step.timing.endTime) - <any>new Date(step.timing.startTime)) * .001}`
+                    : '' +
                     `and ${step.status}`,
                 color: build.status === 'FAILURE' ? 16714507 : 6618931
             });
