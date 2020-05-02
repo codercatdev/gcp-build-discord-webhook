@@ -1,4 +1,5 @@
 import * as functions from 'firebase-functions';
+import fetch from 'node-fetch';
 
 export const gcpBuildTriggerDiscord = functions.pubsub.topic('cloud-builds').onPublish(async (pubSubEvent) => {
     const build = JSON.parse(Buffer.from(pubSubEvent.data, 'base64').toString());
