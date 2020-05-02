@@ -6,11 +6,12 @@ export const gcpBuildTriggerDiscord = functions.pubsub.topic('cloud-builds').onP
     const status = ['SUCCESS', 'FAILURE', 'INTERNAL_ERROR', 'TIMEOUT'];
     if (status.indexOf(build.status) === -1) {
         console.log('Status not found');
+        return false;
     }
 
     try {
         const msg = createBuildMessage(build);
-        await sendDiscordBuildPost(msg);
+        return sendDiscordBuildPost(msg);
     } catch (err) {
         console.log(err);
     }
